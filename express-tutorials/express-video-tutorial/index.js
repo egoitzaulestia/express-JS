@@ -41,7 +41,32 @@ app.get("/members/id/:id", (req, res) => {
   if (found) {
     const result = members.filter((member) => member.id === +id);
     res.status(200).send(result);
+  } else {
+    res.status(404).send({ message: "it does not exist" });
   }
+});
+
+// POST
+app.post("/members", (req, res) => {
+  const { name, email, status } = req.body;
+
+  const newMember = {
+    id: members.length + 1,
+    name,
+    email,
+    status,
+  };
+  console.log(newMember);
+
+  members.push(newMember);
+
+  res.status(201).send(members);
+  //        {
+  //     id: members.length + 1,
+  //     name: "John Doe",
+  //     email: "john@gmail.com",
+  //     status: "active",
+  //   }
 });
 
 app.listen(PORT, () => {
