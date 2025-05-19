@@ -40,7 +40,7 @@ app.post("/products", (req, res) => {
   }
 });
 
-// '/products/:id' PUT method route to update a product
+// '/products/:id' PUT method route to update a product by ID
 app.put("/products/:id", (req, res) => {
   const productId = +req.params.id;
   const { nombre, precio } = req.body;
@@ -56,6 +56,20 @@ app.put("/products/:id", (req, res) => {
     product.precio = precio || product.precio;
 
     res.status(200).send({ message: "Product actualized", product });
+  }
+});
+
+// '/products/:id' DELETE method route to delete a product by ID
+app.delete("/products/:id", (req, res) => {
+  const productId = +req.params.id;
+
+  const found = dataProducts.items.some((product) => product.id === productId);
+
+  if (found) {
+    const newdataProductsArray = dataProducts.items.filter(
+      (product) => product.id !== productId
+    );
+    res.status(200).send(newdataProductsArray);
   }
 });
 
