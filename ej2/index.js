@@ -32,7 +32,7 @@ app.put("/products/:id", (req, res) => {
 // '/products/:is' DELETE method route
 app.delete("/products/:id", (req, res) => {
   const productId = +req.params.id;
-  res.status(200).send({ message: `Product ${productId} deleted` });
+  res.status(200).send({ message: `Product ${productId} has been deleted` });
 });
 
 // USERS ROUTES
@@ -45,7 +45,19 @@ app.get("/users", (req, res) => {
 // '/users/:id' POST method route
 app.post("/users/:id", (req, res) => {
   const newUser = req.body;
-  res.status(201).send({ message: `${newUser} has been registered` });
+  res.status(201).send({ message: `${newUser.name} has been registered` });
+});
+
+// '/users/:id' PUT method route
+app.put("/users/:id", (req, res) => {
+  const userId = +req.params.id;
+  res.status(200).send({ message: `User ${userId} updated` });
+});
+
+// '/users/:id' DELETE method route
+app.delete("/users/:id", (req, res) => {
+  const userId = +req.params.id;
+  res.status(200).send({ message: `User ${userId} has been deleted` });
 });
 
 app.listen(PORT, () => {
