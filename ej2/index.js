@@ -5,14 +5,20 @@ const PORT = 3000;
 
 app.use(express.json());
 
-// Root route
+// '/' (root) route; GET method
 app.get("/", (req, res) => {
   res.status(200).send({ message: "Welcome to our shop!" });
 });
 
-// Products root
+// '/products' route; GET method
 app.get("/products", (req, res) => {
   res.status(200).send({ message: "Products list" });
+});
+
+// '/products' route; PUT method
+app.put("/products/:id", (req, res) => {
+  const productId = +req.params.id;
+  res.status(200).send({ message: `Update product ${productId}` });
 });
 
 app.listen(PORT, () => {
