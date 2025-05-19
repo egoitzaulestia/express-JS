@@ -73,7 +73,7 @@ app.delete("/products/:id", (req, res) => {
   }
 });
 
-// '/products/price'
+// '/products/price/:price' GET method route to filter (search) a product by price
 app.get("/products/price/:price", (req, res) => {
   const productPrice = +req.params.price;
 
@@ -85,13 +85,20 @@ app.get("/products/price/:price", (req, res) => {
     const productPrizeMatch = dataProducts.items.filter(
       (product) => product.precio === productPrice
     );
-    console.log(productPrizeMatch);
     res.status(200).send(productPrizeMatch);
   } else {
     res
       .status(200)
       .send({ message: `There is not product with price: $${productPrice}` });
   }
+});
+
+// '/products/filteredByPrice' GET method route to filter products by fixed range
+app.get("/products/filteredByPrice", (req, res) => {
+  const filterdProducts = dataProducts.items.filter(
+    (product) => product.precio > 50 && product.precio < 250
+  );
+  res.status(200).send(filterdProducts);
 });
 
 app.listen(PORT, () => {
