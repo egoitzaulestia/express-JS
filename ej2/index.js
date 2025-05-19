@@ -5,6 +5,8 @@ const PORT = 3000;
 
 app.use(express.json());
 
+// PRODUCTS ROUTES
+
 // '/' (root) GET method route
 app.get("/", (req, res) => {
   res.status(200).send({ message: "Welcome to our shop!" });
@@ -18,9 +20,7 @@ app.get("/products", (req, res) => {
 // '/products/:id' POST methed route
 app.post("/products/:id", (req, res) => {
   const newProduct = req.body;
-  res
-    .status(201)
-    .send({ message: `New product created: ${newProduct.product}` });
+  res.status(201).send({ message: `Product ${newProduct.product} created` });
 });
 
 // '/products/:id' PUT method route
@@ -33,6 +33,19 @@ app.put("/products/:id", (req, res) => {
 app.delete("/products/:id", (req, res) => {
   const productId = +req.params.id;
   res.status(200).send({ message: `Product ${productId} deleted` });
+});
+
+// USERS ROUTES
+
+// '/users' GET method route
+app.get("/users", (req, res) => {
+  res.status(200).send({ message: "Users list" });
+});
+
+// '/users/:id' POST method route
+app.post("/users/:id", (req, res) => {
+  const newUser = req.body;
+  res.status(201).send({ message: `${newUser} has been registered` });
 });
 
 app.listen(PORT, () => {
