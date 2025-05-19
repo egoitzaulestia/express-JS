@@ -73,6 +73,27 @@ app.delete("/products/:id", (req, res) => {
   }
 });
 
+// '/products/price'
+app.get("/products/price/:price", (req, res) => {
+  const productPrice = +req.params.price;
+
+  const found = dataProducts.items.some(
+    (product) => product.precio === productPrice
+  );
+
+  if (found) {
+    const productPrizeMatch = dataProducts.items.filter(
+      (product) => product.precio === productPrice
+    );
+    console.log(productPrizeMatch);
+    res.status(200).send(productPrizeMatch);
+  } else {
+    res
+      .status(200)
+      .send({ message: `There is not product with price: $${productPrice}` });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
