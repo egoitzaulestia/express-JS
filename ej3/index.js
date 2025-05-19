@@ -17,11 +17,12 @@ const dataProducts = {
   ],
 };
 
-// '/products' GET method route
+// '/products' GET method route to show JSON data
 app.get("/products", (req, res) => {
   res.status(200).send(dataProducts);
 });
 
+// '/products' POST method route to create a new product
 app.post("/products", (req, res) => {
   const { nombre, precio } = req.body;
 
@@ -36,6 +37,25 @@ app.post("/products", (req, res) => {
 
     dataProducts.items.push(newProduct);
     res.status(201).send({ message: "New product created" });
+  }
+});
+
+// '/products/:id' PUT method route to update a product
+app.put("/products/:id", (req, res) => {
+  const productId = +req.params.id;
+  const { nombre, precio } = req.body;
+
+  const found = dataProducts.items.some((product) => product.id === productId);
+
+  if (found) {
+    const product = dataProducts.items.find(
+      (product) => product.id === productId
+    );
+
+    product.nombre = nombre || product.nombre;
+    product.precio = precio || product.precio;
+
+    res.status(200).send({ message: "Product actualized", product });
   }
 });
 
