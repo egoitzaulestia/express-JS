@@ -33,13 +33,13 @@ app.get("/members", (req, res) => {
 });
 
 // GET BY ID
-app.get("/members/id/:id", (req, res) => {
-  const id = req.params.id;
+app.get("/members/:id", (req, res) => {
+  const id = +req.params.id;
 
-  const found = members.some((member) => member.id === +id);
+  const found = members.some((member) => member.id === id);
 
   if (found) {
-    const result = members.filter((member) => member.id === +id);
+    const result = members.filter((member) => member.id === id);
     res.status(200).send(result);
   } else {
     res.status(404).send({ message: "it does not exist" });
@@ -48,25 +48,51 @@ app.get("/members/id/:id", (req, res) => {
 
 // POST
 app.post("/members", (req, res) => {
-  const { name, email, status } = req.body;
+  const { name, email } = req.body; // I didn't destructure 'status' on purpose
 
-  const newMember = {
-    id: members.length + 1,
-    name,
-    email,
-    status,
-  };
-  console.log(newMember);
+  if (name === "" || email === "") {
+    res.status(400).send({ message: "error" });
+  } else {
+    const newMember = {
+      id: members.length + 1,
+      name,
+      email,
+      status: req.body.status, // I left this to see the structure behind
+    };
 
-  members.push(newMember);
+    console.log(newMember);
 
-  res.status(201).send(members);
-  //        {
-  //     id: members.length + 1,
-  //     name: "John Doe",
-  //     email: "john@gmail.com",
-  //     status: "active",
-  //   }
+    members.push(newMember);
+    res.status(201).send(members);
+  }
+});
+
+// UPDATE
+app.put("/members/id/:id", (req, res) => {
+  const id = +req.params.id;
+
+  const found = members.some((member) => member.id === id);
+
+  if (found) {
+    const user = members.find((member) => member.id === id);
+    user.name = req.body.name || user.name;
+    user.email = req.body.email ? req.body.email : user.email;
+
+    res.status(200).send({ message: "actualized", user });
+  } else {
+    res.status(400).send({ message: "error" });
+  }
+});
+
+// DELETE
+app.delete("/members/:id", (req, res) => {
+  const id = +req.params.id;
+  const found = members.some((member) => member.id === id);
+
+  if (found) {
+    const newMembersArray = members.filter((member) => member.id !== id);
+    res.status(200).send(newMembersArray);
+  }
 });
 
 app.listen(PORT, () => {
