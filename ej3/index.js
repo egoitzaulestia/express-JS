@@ -88,8 +88,8 @@ app.get("/products/price/:price", (req, res) => {
     res.status(200).send(productPrizeMatch);
   } else {
     res
-      .status(200)
-      .send({ message: `There is not product with price: $${productPrice}` });
+      .status(404)
+      .send({ message: `There is not product with $${productPrice} price` });
   }
 });
 
@@ -99,6 +99,22 @@ app.get("/products/filteredByPrice", (req, res) => {
     (product) => product.precio > 50 && product.precio < 250
   );
   res.status(200).send(filterdProducts);
+});
+
+// '/products/:id' GET method route to get a product by ID
+app.get("/products/:id", (req, res) => {
+  const productId = +req.params.id;
+
+  const found = dataProducts.items.some((product) => product.id === productId);
+
+  if (found) {
+    const product = dataProducts.items.filter(
+      (product) => product.id === productId
+    );
+    res.status(200).send(product);
+  } else {
+    res.status(404).send({ message: `Product with id ${productId} not found` });
+  }
 });
 
 app.listen(PORT, () => {
