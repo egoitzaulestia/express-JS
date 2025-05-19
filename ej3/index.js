@@ -101,8 +101,8 @@ app.get("/products/filteredByPrice", (req, res) => {
   res.status(200).send(filterdProducts);
 });
 
-// '/products/:id' GET method route to get a product by ID
-app.get("/products/:id", (req, res) => {
+// '/products/id/:id' GET method route to get a product by ID
+app.get("/products/id/:id", (req, res) => {
   const productId = +req.params.id;
 
   const found = dataProducts.items.some((product) => product.id === productId);
@@ -114,6 +114,26 @@ app.get("/products/:id", (req, res) => {
     res.status(200).send(product);
   } else {
     res.status(404).send({ message: `Product with id ${productId} not found` });
+  }
+});
+
+// '/products/name/:name' GET method route to get a product by its name
+app.get("/products/name/:name", (req, res) => {
+  const productName = req.params.name;
+
+  const found = dataProducts.items.some(
+    (product) => product.nombre === productName
+  );
+
+  if (found) {
+    const product = dataProducts.items.filter(
+      (product) => product.nombre === productName
+    );
+    res.status(200).send(product);
+  } else {
+    res
+      .status(404)
+      .send({ message: `Product called \'${productName}\' not found` });
   }
 });
 
