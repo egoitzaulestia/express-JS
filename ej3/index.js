@@ -3,6 +3,8 @@ const express = require("express");
 const app = express();
 const PORT = 3000;
 
+app.use(express.json());
+
 const dataProducts = {
   description: "Productos",
   items: [
@@ -18,6 +20,23 @@ const dataProducts = {
 // '/products' GET method route
 app.get("/products", (req, res) => {
   res.status(200).send(dataProducts);
+});
+
+app.post("/products", (req, res) => {
+  const { nombre, precio } = req.body;
+
+  if (nombre === "" || precio === "") {
+    res.status(400).send({ message: "Error while creating the product" });
+  } else {
+    const newProduct = {
+      id: dataProducts.items.length + 1,
+      nombre,
+      precio,
+    };
+
+    dataProducts.items.push(newProduct);
+    res.status(201).send({ message: "New product created" });
+  }
 });
 
 app.listen(PORT, () => {
